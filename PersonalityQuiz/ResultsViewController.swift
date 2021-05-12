@@ -55,6 +55,9 @@ class ResultsViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = doneButton
         setupView()
         layoutView()
+        
+        self.navigationItem.hidesBackButton = true
+        calculatePersonalityResult()
     }
     
     private func setupView() {
@@ -70,7 +73,20 @@ class ResultsViewController: UIViewController {
         self.contentStackView.trailingAnchor.constraint(equalTo: safeArea.trailingAnchor, constant: -20).isActive = true
     }
     
+    func calculatePersonalityResult() {
+        let mostCommonAnswer = self.response.reduce(into: [AnimalCharacters: Int]()) {
+            if let existingCount = $0[$1.type] {
+                $0[$1.type] = existingCount + 1
+            } else {
+                $0[$1.type] = 1
+            }
+        }.sorted(by: { $0.1 > $1.1 }).first!.key
+        
+        self.titleLabel.text = "You are a \(mostCommonAnswer.emoji)!"
+        self.descriptionLabel.text = mostCommonAnswer.definition
+    }
+    
     @objc private func doneButtonAction() {
-        print("done")
+        self.dismiss(animated: true, completion: nil)
     }
 }
