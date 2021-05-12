@@ -9,6 +9,7 @@ import UIKit
 
 class ResultsViewController: UIViewController {
     
+    // views
     let contentStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -17,20 +18,34 @@ class ResultsViewController: UIViewController {
         stackView.distribution = .fill
         stackView.spacing = 20
         
-        let titleLabel: UILabel = UILabel()
-        titleLabel.font = .systemFont(ofSize: 50)
-        titleLabel.text = "text"
-        stackView.addArrangedSubview(titleLabel)
-        
-        let descriptionLabel: UILabel = UILabel()
-        descriptionLabel.text = "description"
-        descriptionLabel.lineBreakMode = .byWordWrapping
-        descriptionLabel.numberOfLines = 0
-        stackView.addArrangedSubview(descriptionLabel)
-        
         return stackView
     }()
-
+    let titleLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.font = .systemFont(ofSize: 50)
+        label.text = "text"
+        return label
+    }()
+    let descriptionLabel: UILabel = {
+        let label: UILabel = UILabel()
+        label.text = "description"
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    // variables
+    var response: [Answer]
+    
+    init(response: [Answer]) {
+        self.response = response
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -43,6 +58,8 @@ class ResultsViewController: UIViewController {
     }
     
     private func setupView() {
+        self.contentStackView.addArrangedSubview(self.titleLabel)
+        self.contentStackView.addArrangedSubview(self.descriptionLabel)
         self.view.addSubview(self.contentStackView)
     }
     
